@@ -58,8 +58,6 @@ public class Ball : MonoBehaviour
 
     private Queue<GameObject> Splashs = new Queue<GameObject>();
 
-    //public Animator ballAnim; SİLME (rapor için)
-
     private void Awake()
     {
         Instance = this;
@@ -128,10 +126,6 @@ public class Ball : MonoBehaviour
     {
         particlePrefab.Play();
 
-        //ballAnim.SetBool("Touch", true); buraları raporda animasyon kısmında koymak gerektiği için silme!!
-
-        //Invoke("ResetAnim", 0.5f);
-
         if (collision.transform.parent != null)
         {
             GameObject mainRing = collision.transform.parent.gameObject;
@@ -145,13 +139,6 @@ public class Ball : MonoBehaviour
 
                     ballTransform.DOScale(new Vector3(0.38f, 0.3f, 0.22f), 0.1f).SetLoops(2, LoopType.Yoyo);
 
-                    /*
-                    GameObject splash = Instantiate(splashPrefab, transform.position + new Vector3(0, -0.1f, 0), transform.rotation);
-                    
-                    splash.transform.SetParent(collision.gameObject.transform);
-                    
-                    Destroy(splash, 1f); */
-
                     GameObject splash = prefabPool.GetSplashFromPool(collision);
 
                     Splashs.Enqueue(splash);
@@ -160,9 +147,6 @@ public class Ball : MonoBehaviour
 
                     StartCoroutine(prefabPool.SetPool(splash));
 
-                   // GameObject usedSplash = Splashs.Dequeue();
-
-                   // rb.velocity = new Vector3(rb.velocity.x, jump, rb.velocity.z);
 
                     if (fireMode)
                     {
@@ -196,11 +180,7 @@ public class Ball : MonoBehaviour
 
                     rb.velocity = new Vector3(rb.velocity.x, jump + powerCount * 0.3f, rb.velocity.z);
                     powerCount = 0;
-                    /*
-                    meshRenderer.material = ballMaterial;
-
-                    gameObject.GetComponent<TrailRenderer>().material = ballTrail; */
-
+                   
                     if (fireMode)
                     {
                         for (int i = 0; i < mainRing.transform.childCount; i++)
@@ -232,44 +212,8 @@ public class Ball : MonoBehaviour
             gameManager.LevelCompleted = true;
         }
 
-        /*
-        if (collision.collider.tag == "Safe")
-        {               
-            //rb.AddForce(Vector3.up * jump);
-            powerCount =0;
-
-            meshRenderer.material = ballColor;
-
-            rb.velocity = new Vector3(rb.velocity.x, jump, rb.velocity.z);
-           
-
-            if (fireMode == true)
-            {
-                mainRing.GetComponent<RingPiecer>().Breaker(fireMode);
-                Destroy(mainRing.transform.parent.parent.gameObject, 0.5f);
-                fireMode = false;
-            }
-        }
-
-        if (collision.collider.tag == "Unsafe")
-        {
-            
-            GameManager.gameOver = true;
-        }
-        if (collision.collider.tag == "Finish")
-        {
-            
-            GameManager.levelCompleted = true;
-        }
-        */
-
-
     }
-    void ResetAnim()
-    {
-        //ballAnim.SetBool("Touch", false);
-    }
-
+   
     public void AddExtraScore()
     {
         canvasManager.Score += 20;
@@ -305,9 +249,7 @@ public class Ball : MonoBehaviour
 
                 break;
 
-
         }
     }
-
 
 }
